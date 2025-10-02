@@ -13,6 +13,25 @@ class TmdbService
         $this->apiKey = env('TMDB_API_KEY');
     }
 
+    public function getNowShowingMoviesInBrazil(int $page)
+    {
+        $response = Http::get(
+            'https://api.themoviedb.org/3/movie/now_playing',
+            [
+                'api_key' => $this->apiKey,
+                'language' => 'pt-BR',
+                'page' => $page,
+                'region' => 'BR',
+                'sort_by' => 'popularity.desc',
+                'with_release_type' => '2|3',
+                'release_date.lte' => now()->toDateString(),
+                'release_date.gte' => now()->subMonths(2)->toDateString(),
+            ],
+        );
+
+        return $response->json();
+    }
+
     public function getPopularMovies()
     {
         $response = Http::get('https://api.themoviedb.org/3/movie/popular', [
