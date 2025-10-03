@@ -2,8 +2,8 @@
 
 namespace app\Enums;
 
-enum SeatStatus: string
+enum ReservationStatus: string
 {
-    case AVAILABLE = 'AVAILABLE';
+    case CANCELED = 'CANCELED';
     case RESERVED = 'RESERVED';
 }
