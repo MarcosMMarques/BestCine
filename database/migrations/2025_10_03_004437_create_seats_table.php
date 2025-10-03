@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->integer('row');
             $table->integer('number');
+            $table->foreignId('room_id')->constrained(
+                table: 'room'
+            );
             $table->timestamps();
         });
     }
