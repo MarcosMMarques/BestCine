@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('reservation', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained(
-                table: 'user'
+                table: 'users'
             );
             $table->foreignId('session_id')->constrained(
                 table: 'session'
