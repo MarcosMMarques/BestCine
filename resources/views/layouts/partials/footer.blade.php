@@ -1,4 +1,4 @@
-<footer class="bg-gray-900 text-gray-200 py-10 mt-10">
+<footer class="bg-gray-900 text-gray-200 py-10">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-8">
     <div class="flex items-center gap-4">
       <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor" class="text-yellow-400">
