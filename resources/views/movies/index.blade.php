@@ -12,10 +12,7 @@
         <div class="max-w-2xl">
           <p class="text-xs font-semibold uppercase tracking-[0.35em] text-amber-400/80">Agora nos cinemas</p>
           <h2 class="mt-3 text-4xl font-black text-white md:text-5xl">Em cartaz</h2>
-          <p class="mt-4 text-base text-slate-300 md:text-lg">Descubra as produções mais comentadas do momento e garanta seu lugar na próxima sessão.</p>
         </div>
-
-        <span class="self-start rounded-full border border-amber-500/20 bg-amber-500/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.3em] text-amber-100">Atualizado diariamente</span>
       </div>
 
       @if($movies && count($movies))
@@ -24,7 +21,6 @@
             @php
               $posterPath = $movie['poster_path'] ?? null;
               $posterUrl = $posterPath ? 'https://image.tmdb.org/t/p/w500' . $posterPath : 'https://via.placeholder.com/500x750?text=Sem+Imagem';
-              $voteAverage = $movie['vote_average'] ?? null;
               $releaseDate = $movie['release_date'] ?? null;
               $formattedDate = $releaseDate ? \Carbon\Carbon::parse($releaseDate)->format('d/m/Y') : null;
               $overview = $movie['overview'] ?? null;
@@ -35,15 +31,6 @@
               <div class="relative h-80 overflow-hidden">
                 <img loading="lazy" src="{{ $posterUrl }}" alt="Poster de {{ $movie['title'] }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
-
-                @if($voteAverage !== null)
-                  <span class="absolute top-4 left-4 flex items-center gap-2 rounded-full bg-amber-400/90 px-3 py-1 text-sm font-semibold text-slate-900 shadow-lg shadow-amber-900/40">
-                    <svg class="h-4 w-4 text-slate-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.107 3.401a1 1 0 00.95.69h3.58c.969 0 1.371 1.24.588 1.81l-2.897 2.104a1 1 0 00-.364 1.118l1.107 3.401c.3.921-.755 1.688-1.54 1.118l-2.897-2.104a1 1 0 00-1.175 0l-2.897 2.104c-.785.57-1.84-.197-1.54-1.118l1.107-3.401a1 1 0 00-.364-1.118L2.823 8.828c-.783-.57-.38-1.81.588-1.81h3.58a1 1 0 00.95-.69l1.107-3.401z"/>
-                    </svg>
-                    <span>{{ number_format($voteAverage, 1) }}</span>
-                  </span>
-                @endif
               </div>
 
               <div class="relative flex h-full flex-col justify-between gap-4 p-6">
@@ -58,14 +45,6 @@
                       <dt class="sr-only">Data de lançamento</dt>
                       <dd>{{ $formattedDate ?? 'Data não informada' }}</dd>
                     </div>
-
-                    @if(!empty($movie['original_language']))
-                      <div class="flex items-center gap-2 uppercase tracking-wide text-xs text-slate-400">
-                        <span class="inline-flex h-2 w-2 rounded-full bg-slate-600"></span>
-                        <dt class="sr-only">Idioma original</dt>
-                        <dd>{{ $movie['original_language'] }}</dd>
-                      </div>
-                    @endif
                   </dl>
 
                   @if($overview)
