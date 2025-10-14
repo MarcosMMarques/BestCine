@@ -28,6 +28,8 @@
             @endphp
 
             <article class="group relative overflow-hidden rounded-3xl bg-slate-900/70 shadow-2xl shadow-slate-950/40 ring-1 ring-white/10 transition-transform duration-300 hover:-translate-y-2 hover:ring-amber-400/40">
+              <a href="{{ route('movies.show', $movie['id']) }}" class="absolute inset-0 z-10" aria-label="Ver detalhes de {{ $movie['title'] }}"></a>
+
               <div class="relative h-80 overflow-hidden">
                 <img loading="lazy" src="{{ $posterUrl }}" alt="Poster de {{ $movie['title'] }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
@@ -58,13 +60,6 @@
                   <span class="text-slate-400">
                     Popularidade: <strong class="text-white">{{ $popularity !== null ? number_format($popularity, 0, ',', '.') : '—' }}</strong>
                   </span>
-
-                  <a href="https://www.themoviedb.org/movie/{{ $movie['id'] }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full border border-amber-400/60 bg-amber-400/20 px-4 py-2 font-semibold text-amber-200 transition-colors duration-300 hover:border-amber-300 hover:bg-amber-300/30 hover:text-white">
-                    Saiba mais
-                    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path d="M10.293 3.293a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L13.586 11H5a1 1 0 110-2h8.586l-3.293-3.293a1 1 0 010-1.414z"/>
-                    </svg>
-                  </a>
                 </div>
               </div>
             </article>
