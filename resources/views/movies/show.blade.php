@@ -1,20 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-  @php
-    $posterPath = $movie['poster_path'] ?? null;
-    $posterUrl = $posterPath ? 'https://image.tmdb.org/t/p/w500' . $posterPath : 'https://via.placeholder.com/500x750?text=Sem+Imagem';
-    $backdropPath = $movie['backdrop_path'] ?? null;
-    $backdropUrl = $backdropPath ? 'https://image.tmdb.org/t/p/original' . $backdropPath : null;
-    $releaseDate = $movie['release_date'] ?? null;
-    $formattedDate = $releaseDate ? \Carbon\Carbon::parse($releaseDate)->format('d/m/Y') : null;
-    $runtime = $movie['runtime'] ?? null;
-    $runtimeLabel = $runtime ? sprintf('%dh %02dmin', floor($runtime / 60), $runtime % 60) : null;
-    $genres = !empty($movie['genres']) ? collect($movie['genres'])->pluck('name')->filter()->all() : [];
-    $productionCompanies = !empty($movie['production_companies']) ? collect($movie['production_companies'])->pluck('name')->filter()->all() : [];
-    $voteAverage = $movie['vote_average'] ?? null;
-  @endphp
-
   <section class="relative overflow-hidden bg-slate-950">
     @if($backdropUrl)
       <div aria-hidden="true" class="absolute inset-0">
@@ -37,7 +23,9 @@
 
       <div class="mt-12 grid gap-10 lg:grid-cols-[320px,1fr]">
         <div class="relative mx-auto w-full max-w-sm overflow-hidden rounded-3xl bg-slate-900/80 shadow-2xl ring-1 ring-white/10">
-          <img src="{{ $posterUrl }}" alt="Poster de {{ $movie['title'] }}" class="w-full object-cover" loading="lazy" />
+          @if($posterUrl)
+            <img src="{{ $posterUrl }}" alt="Poster de {{ $movie['title'] }}" class="w-full object-cover" loading="lazy" />
+          @endif
 
           @if($runtimeLabel)
             <div class="absolute top-4 right-4 rounded-full bg-slate-900/80 px-3 py-1 text-s font-semibold uppercase tracking-wide text-yellow-300">

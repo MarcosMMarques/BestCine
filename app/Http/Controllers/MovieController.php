@@ -28,23 +28,8 @@ class MovieController extends Controller
             abort(404);
         }
 
-        $trailer = collect(data_get($movie, 'videos.results', []))
-            ->first(function ($video) {
-                return ($video['type'] ?? null) === 'Trailer'
-                    && ($video['site'] ?? null) === 'YouTube'
-                    && filled($video['key'] ?? null);
-            });
+        $formatted = $this->tmdb->formatMovieDetails($movie);
 
-        $cast = collect(data_get($movie, 'credits.cast', []))
-            ->filter(function ($actor) {
-                return filled($actor['name'] ?? null) || filled($actor['character'] ?? null);
-            })
-            ->take(10);
-
-        return view('movies.show', [
-            'movie' => $movie,
-            'trailer' => $trailer,
-            'cast' => $cast,
-        ]);
+        return view('movies.show', array_merge(['movie' => $movie], $formatted));
     }
 }
