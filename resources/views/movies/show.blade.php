@@ -19,6 +19,17 @@
           </svg>
           Voltar
         </a>
+
+        <div class="flex flex-wrap items-center gap-3">
+          @if($trailerUrl)
+            <a href="{{ $trailerUrl }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full border border-rose-400/40 bg-rose-400/10 px-4 py-2 text-sm font-semibold text-rose-100 transition-colors hover:border-rose-300 hover:bg-rose-300/20 hover:text-white">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path d="M6.5 5.5l9 4.5-9 4.5v-9z" />
+              </svg>
+              Assistir trailer
+            </a>
+          @endif
+        </div>
       </div>
 
       <div class="mt-12 grid gap-10 lg:grid-cols-[320px,1fr]">
