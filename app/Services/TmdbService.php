@@ -43,12 +43,18 @@ class TmdbService
         return $response->json();
     }
 
-    public function getMovieDetails($movieId)
+    public function getMovieDetails($movieId, array $append = [])
     {
-        $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}", [
+        $query = [
             'api_key' => $this->apiKey,
             'language' => 'pt-BR',
-        ]);
+        ];
+
+        if (!empty($append)) {
+            $query['append_to_response'] = implode(',', $append);
+        }
+
+        $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}", $query);
 
         return $response->json();
     }
