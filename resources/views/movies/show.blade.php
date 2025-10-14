@@ -75,6 +75,8 @@
 
           @if($productionCompanies)
             <div class="rounded-3xl bg-slate-900/80 p-6 ring-1 ring-white/5">
+          @if($productionCompanies)
+            <div class="rounded-3xl bg-slate-900/80 p-6 ring-1 ring-white/5 w-max">
               <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-300">Produtoras</h2>
               <ul class="mt-4 flex flex-wrap gap-3">
                 @foreach($productionCompanies as $company)
