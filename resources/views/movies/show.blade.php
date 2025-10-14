@@ -33,7 +33,7 @@
       </div>
 
       <div class="mt-12 grid gap-10 lg:grid-cols-[320px,1fr]">
-        <div class="relative mx-auto w-full max-w-sm overflow-hidden rounded-3xl bg-slate-900/80 shadow-2xl ring-1 ring-white/10">
+        <div class="relative h-max mx-auto w-full max-w-sm overflow-hidden rounded-3xl bg-slate-900/80 shadow-2xl ring-1 ring-white/10">
           @if($posterUrl)
             <img src="{{ $posterUrl }}" alt="Poster de {{ $movie['title'] }}" class="w-full object-cover" loading="lazy" />
           @endif
