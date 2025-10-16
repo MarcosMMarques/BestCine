@@ -115,7 +115,6 @@ class TmdbService
             'trailerUrl' => $trailerUrl,
             'castMembers' => $castMembers,
             'profileBaseUrl' => 'https://image.tmdb.org/t/p/w185',
-            'castPlaceholder' => 'https://via.placeholder.com/160x160?text=Sem+Foto',
         ];
     }
 

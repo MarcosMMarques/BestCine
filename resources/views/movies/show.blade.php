@@ -81,7 +81,7 @@
                   @foreach($castMembers as $member)
                     <article class="flex flex-none w-24 flex-col items-center text-center sm:w-28 md:w-32">
                       <div class="relative h-20 w-20 overflow-hidden rounded-full ring-2 ring-amber-400/40 ring-offset-1 ring-offset-slate-900 sm:h-24 sm:w-24 sm:ring-offset-2">
-                        <img src="{{ !empty($member['profile_path']) ? $profileBaseUrl . $member['profile_path'] : $castPlaceholder }}" alt="{{ $member['name'] ?? 'Integrante do elenco' }}" class="h-full w-full object-cover" loading="lazy">
+                        <img src="{{ !empty($member['profile_path']) ? $profileBaseUrl . $member['profile_path'] : asset('images/no-photo.png') }}" alt="{{ $member['name'] ?? 'Integrante do elenco' }}" class="h-full w-full object-cover" loading="lazy">
                       </div>
                       <p class="mt-3 text-xs font-semibold text-white line-clamp-2 sm:text-sm">{{ $member['name'] ?? 'Nome não informado' }}</p>
                     </article>
