@@ -44,6 +44,23 @@ class TmdbService
         return $response->json();
     }
 
+    public function formatNowShowingMoviesInBrazil(array $movies): array
+    {
+        $movies = collect($movies)->take(8)->all();
+        return array_map(function ($movie) {
+            $posterPath = $movie['poster_path'] ?? null;
+            $posterUrl = $posterPath ? 'https://image.tmdb.org/t/p/w500' . $posterPath :
+                'https://via.placeholder.com/500x750?text=Sem+Imagem';
+            $releaseDate = $movie['release_date'] ?? null;
+            $formattedDate = $releaseDate ? Carbon::parse($releaseDate)->format('d/m/Y') : null;
+
+            return array_merge($movie, [
+                'posterUrl' => $posterUrl,
+                'formattedDate' => $formattedDate,
+            ]);
+        }, $movies);
+    }
+
     public function getMovieDetails($movieId, array $append = [])
     {
         $query = [
