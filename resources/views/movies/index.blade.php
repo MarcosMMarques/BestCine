@@ -18,20 +18,11 @@
       @if($movies && count($movies))
         <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           @foreach ($movies as $movie)
-            @php
-              $posterPath = $movie['poster_path'] ?? null;
-              $posterUrl = $posterPath ? 'https://image.tmdb.org/t/p/w500' . $posterPath : 'https://via.placeholder.com/500x750?text=Sem+Imagem';
-              $releaseDate = $movie['release_date'] ?? null;
-              $formattedDate = $releaseDate ? \Carbon\Carbon::parse($releaseDate)->format('d/m/Y') : null;
-              $overview = $movie['overview'] ?? null;
-              $popularity = $movie['popularity'] ?? null;
-            @endphp
-
             <article class="group relative overflow-hidden rounded-3xl bg-slate-900/70 shadow-2xl shadow-slate-950/40 ring-1 ring-white/10 transition-transform duration-300 hover:-translate-y-2 hover:ring-amber-400/40">
               <a href="{{ route('movies.show', $movie['id']) }}" class="absolute inset-0 z-10" aria-label="Ver detalhes de {{ $movie['title'] }}"></a>
 
               <div class="relative h-80 overflow-hidden">
-                <img loading="lazy" src="{{ $posterUrl }}" alt="Poster de {{ $movie['title'] }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+                <img loading="lazy" src="{{ $movie['posterUrl'] }}" alt="Poster de {{ $movie['title'] }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
               </div>
 
@@ -45,20 +36,20 @@
                     <div class="flex items-center gap-2">
                       <span class="inline-flex h-2 w-2 rounded-full bg-amber-400"></span>
                       <dt class="sr-only">Data de lançamento</dt>
-                      <dd>{{ $formattedDate ?? 'Data não informada' }}</dd>
+                      <dd>{{ $movie['formattedDate'] ?? 'Data não informada' }}</dd>
                     </div>
                   </dl>
 
-                  @if($overview)
+                  @if($movie['overview'] ?? null)
                     <p class="text-sm text-slate-400">
-                      {{ \Illuminate\Support\Str::limit($overview, 140) }}
+                      {{ \Illuminate\Support\Str::limit($movie['overview'], 140) }}
                     </p>
                   @endif
                 </div>
 
                 <div class="flex items-center justify-between text-sm">
                   <span class="text-slate-400">
-                    Popularidade: <strong class="text-white">{{ $popularity !== null ? number_format($popularity, 0, ',', '.') : '—' }}</strong>
+                    Popularidade: <strong class="text-white">{{ isset($movie['popularity']) ? number_format($movie['popularity'], 0, ',', '.') : '—' }}</strong>
                   </span>
                 </div>
               </div>
