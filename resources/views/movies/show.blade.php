@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-  <section class="relative overflow-hidden bg-slate-950">
+  <section class="relative overflow-x-hidden bg-slate-950">
     @if($backdropUrl)
       <div aria-hidden="true" class="absolute inset-0">
         <img src="{{ $backdropUrl }}" alt="" class="h-full w-full object-cover opacity-30" />
@@ -11,7 +11,7 @@
       <div aria-hidden="true" class="absolute inset-0 bg-slate-950"></div>
     @endif
 
-    <div class="relative container mx-auto px-4 py-16">
+  <div class="relative container mx-auto px-4 py-16 max-w-full">
       <div class="flex flex-wrap items-center justify-between gap-4">
         <a href="{{ route('movies.index') }}" class="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-2 text-sm font-semibold text-amber-200 transition-colors hover:border-amber-300 hover:bg-amber-300/20 hover:text-white">
           <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -32,7 +32,7 @@
         </div>
       </div>
 
-      <div class="mt-12 grid gap-10 lg:grid-cols-[320px,1fr]">
+  <div class="mt-12 grid gap-10 lg:grid-cols-[320px,1fr] max-w-full">
         <div class="relative h-max mx-auto w-full max-w-sm overflow-hidden rounded-3xl bg-slate-900/80 shadow-2xl ring-1 ring-white/10">
           @if($posterUrl)
             <img src="{{ $posterUrl }}" alt="Poster de {{ $movie['title'] }}" class="w-full object-cover" loading="lazy" />
@@ -45,12 +45,12 @@
           @endif
         </div>
 
-        <div class="space-y-10">
-          <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.35em] text-amber-400/80">{{ filled($movie['tagline'] ?? null) ? $movie['tagline'] : 'Detalhes do filme' }}</p>
-            <h1 class="mt-4 text-4xl font-black text-white md:text-5xl">{{ $movie['title'] }}</h1>
+  <div class="space-y-8 sm:space-y-10 min-w-0">
+          <div class="w-full">
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-amber-400/80 sm:text-sm">{{ filled($movie['tagline'] ?? null) ? $movie['tagline'] : 'Detalhes do filme' }}</p>
+            <h1 class="mt-4 text-3xl font-black text-white sm:text-4xl md:text-5xl">{{ $movie['title'] }}</h1>
 
-            <dl class="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-300">
+            <dl class="mt-6 flex flex-wrap items-center gap-3 text-xs text-slate-300 sm:gap-4 sm:text-sm">
               @if($formattedDate)
                 <div class="flex items-center gap-2">
                   <span class="inline-flex h-2 w-2 rounded-full bg-amber-400"></span>
@@ -69,18 +69,34 @@
             </dl>
 
             @if(!empty($movie['overview']))
-              <p class="mt-6 text-base text-slate-300 md:text-lg">{{ $movie['overview'] }}</p>
+              <p class="mt-6 text-sm text-slate-300 sm:text-base md:text-lg break-words">{{ $movie['overview'] }}</p>
             @endif
           </div>
 
+          @if($castMembers->isNotEmpty())
+            <div class="rounded-3xl bg-slate-900/80 p-5 ring-1 ring-white/5 sm:p-6">
+              <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-300">Elenco principal {{count($castMembers)}}</h2>
+              <div class="mt-4 px-5 overflow-x-auto sm:px-6 max-w-full">
+                <div class="flex gap-4 sm:gap-6 min-w-0">
+                  @foreach($castMembers as $member)
+                    <article class="flex flex-none w-24 flex-col items-center text-center sm:w-28 md:w-32">
+                      <div class="relative h-20 w-20 overflow-hidden rounded-full ring-2 ring-amber-400/40 ring-offset-1 ring-offset-slate-900 sm:h-24 sm:w-24 sm:ring-offset-2">
+                        <img src="{{ !empty($member['profile_path']) ? $profileBaseUrl . $member['profile_path'] : $castPlaceholder }}" alt="{{ $member['name'] ?? 'Integrante do elenco' }}" class="h-full w-full object-cover" loading="lazy">
+                      </div>
+                      <p class="mt-3 text-xs font-semibold text-white line-clamp-2 sm:text-sm">{{ $member['name'] ?? 'Nome não informado' }}</p>
+                    </article>
+                  @endforeach
+                </div>
+              </div>
+            </div>
+          @endif
+
           @if($productionCompanies)
-            <div class="rounded-3xl bg-slate-900/80 p-6 ring-1 ring-white/5">
-          @if($productionCompanies)
-            <div class="rounded-3xl bg-slate-900/80 p-6 ring-1 ring-white/5 w-max">
+            <div class="w-full rounded-3xl bg-slate-900/80 p-5 ring-1 ring-white/5 sm:p-6 max-w-full">
               <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-300">Produtoras</h2>
-              <ul class="mt-4 flex flex-wrap gap-3">
+              <ul class="mt-4 flex flex-wrap gap-2 sm:gap-3 break-words max-w-full">
                 @foreach($productionCompanies as $company)
-                  <li class="rounded-full bg-slate-800/80 px-4 py-2 text-sm font-medium text-slate-200">{{ $company }}</li>
+                  <li class="rounded-full bg-slate-800/80 px-3 py-1.5 text-xs font-medium text-slate-200 sm:px-4 sm:py-2 sm:text-sm break-words">{{ $company }}</li>
                 @endforeach
               </ul>
             </div>
