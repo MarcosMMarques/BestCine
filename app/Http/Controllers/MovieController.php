@@ -15,8 +15,9 @@ class MovieController extends Controller
 
     public function index()
     {
-        $movies = $this->tmdb->getNowShowingMoviesInBrazil(1)['results'];
-        // dd($movies);
+        $moviesData = $this->tmdb->getNowShowingMoviesInBrazil(1);
+        $movies = $this->tmdb->formatNowShowingMoviesInBrazil($moviesData['results'] ?? []);
+
         return view('movies.index', ['movies' => $movies]);
     }
 
