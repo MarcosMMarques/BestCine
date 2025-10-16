@@ -73,7 +73,7 @@ class TmdbService
             ->filter(function ($actor) {
                 return filled($actor['name'] ?? null) || filled($actor['character'] ?? null);
             })
-            ->take(10);
+            ->take(15);
 
         $posterPath = data_get($movie, 'poster_path');
         $posterUrl = $posterPath

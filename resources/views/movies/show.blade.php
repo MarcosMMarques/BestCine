@@ -76,8 +76,8 @@
           @if($castMembers->isNotEmpty())
             <div class="rounded-3xl bg-slate-900/80 p-5 ring-1 ring-white/5 sm:p-6">
               <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-300">Elenco principal {{count($castMembers)}}</h2>
-              <div class="mt-4 px-5 overflow-x-auto sm:px-6 max-w-full">
-                <div class="flex gap-4 sm:gap-6 min-w-0">
+              <div class="mt-4 -mx-5 px-5 py-2 overflow-x-auto sm:-mx-6 sm:px-6">
+                <div class="flex gap-4 sm:gap-6">
                   @foreach($castMembers as $member)
                     <article class="flex flex-none w-24 flex-col items-center text-center sm:w-28 md:w-32">
                       <div class="relative h-20 w-20 overflow-hidden rounded-full ring-2 ring-amber-400/40 ring-offset-1 ring-offset-slate-900 sm:h-24 sm:w-24 sm:ring-offset-2">
