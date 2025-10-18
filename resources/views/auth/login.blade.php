@@ -25,10 +25,19 @@
         </div>
 
 
-        <div class="mt-4">
-            <button>
-                <a href="{{ route('register') }}" > Cadastrar</a>
-            </button>
+        <div class="mt-6 space-y-3">
+            <a href="{{ route('register') }}"
+               class="inline-flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                {{ __('Criar uma conta') }}
+            </a>
+
+            <a href="{{ url('/auth/google') }}"
+               class="inline-flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill="#EA4335" d="M12 10.2v3.6h5.1c-.3 1.5-1.8 4.2-5.1 4.2-3.1 0-5.7-2.6-5.7-5.8S8.9 6.4 12 6.4c1.8 0 3.1.8 3.8 1.4l2.6-2.5C17 3.6 14.7 2.6 12 2.6 6.9 2.6 2.8 6.7 2.8 11.8S6.9 21 12 21c6.5 0 9.2-4.6 9.2-8.2 0-.6 0-1-.1-1.4H12z" />
+                </svg>
+                {{ __('Continuar com Google') }}
+            </a>
         </div>
 
         <!-- Remember Me -->
