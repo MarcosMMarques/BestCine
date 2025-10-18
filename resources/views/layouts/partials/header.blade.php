@@ -15,11 +15,11 @@
       </button>
     </div>
     <el-popover-group class="hidden lg:flex lg:gap-x-12">
-      <a href="#" class="text-sm/6 font-semibold text-white">Filmes em Cartaz</a>
+      <a href="{{ route("movies.index") }}" class="text-sm/6 font-semibold text-white">Filmes em Cartaz</a>
       <a href="#" class="text-sm/6 font-semibold text-white">Meus Ingressos</a>
     </el-popover-group>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-      <a href="#" class="text-sm/6 font-semibold text-white">Entrar <span aria-hidden="true">&rarr;</span></a>
+      <a href="{{ route('login') }}" class="text-sm/6 font-semibold text-white">Entrar <span aria-hidden="true">&rarr;</span></a>
     </div>
   </nav>
 </header>
