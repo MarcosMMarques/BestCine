@@ -12,6 +12,7 @@ class Movie extends Model
     protected $table = 'movie';
 
     protected $fillable = [
+        'tmdb_id',
         'title',
         'synopsis',
         'length',
@@ -21,10 +22,6 @@ class Movie extends Model
         'trailer_url',
         'tagline',
         'release_date',
-    ];
-
-    protected $hidden = [
-        'image',
     ];
 
     protected function sessions(): HasMany
