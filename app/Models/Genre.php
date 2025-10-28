@@ -13,7 +13,9 @@ class Genre extends Model
 
     protected $keyType = 'string';
 
-    protected $incrementing = false;
+    public $incrementing = false;
+
+    public $timestamps = false;
 
     protected $fillable = [
         'name',
