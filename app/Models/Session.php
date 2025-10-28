@@ -19,17 +19,17 @@ class Session extends Model
         'datetime'
     ];
 
-    protected function movie(): BelongsTo
+    public function movie(): BelongsTo
     {
         return $this->belongsTo(Movie::class);
     }
 
-    protected function room(): BelongsTo
+    public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
     }
 
-    protected function reservations(): HasMany
+    public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);
     }

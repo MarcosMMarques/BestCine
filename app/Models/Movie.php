@@ -24,22 +24,22 @@ class Movie extends Model
         'release_date',
     ];
 
-    protected function sessions(): HasMany
+    public function sessions(): HasMany
     {
         return $this->hasMany(Session::class);
     }
 
-    protected function genres(): BelongsToMany
+    public function genres(): BelongsToMany
     {
         return $this->belongsToMany(Genre::class, 'movie_genre', 'movie_id', 'genre_id');
     }
 
-    protected function actors(): BelongsToMany
+    public function actors(): BelongsToMany
     {
         return $this->belongsToMany(Actor::class, 'actor_movie', 'movie_id', 'actor_id');
     }
 
-    protected function productionCompanies(): BelongsToMany
+    public function productionCompanies(): BelongsToMany
     {
         return $this->belongsToMany(ProductionCompanie::class, 'movie_production_companie', 'movie_id', 'production_companie_id');
     }

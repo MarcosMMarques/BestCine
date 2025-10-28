@@ -16,12 +16,12 @@ class Room extends Model
         'seat_quantity',
     ];
 
-    protected function sessions(): HasMany
+    public function sessions(): HasMany
     {
         return $this->hasMany(Session::class);
     }
 
-    protected function seats(): HasMany
+    public function seats(): HasMany
     {
         return $this->hasMany(Seat::class);
     }

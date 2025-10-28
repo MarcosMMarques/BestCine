@@ -18,7 +18,7 @@ class Seat extends Model
         'status',
     ];
 
-    protected function room(): BelongsTo
+    public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
     }
