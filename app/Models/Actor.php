@@ -9,7 +9,7 @@ class Actor extends Model
 {
     protected $table = 'actor';
 
-    protected $incrementing = false;
+    public $timestamps = false;
 
     protected $fillable = [
         'id',
