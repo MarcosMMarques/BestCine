@@ -8,7 +8,7 @@ class ProductionCompanie extends Model
 {
     protected $table = 'production_companie';
 
-    protected $incrementing = false;
+    public $timestamps = false;
 
     protected $fillable = [
         'name',
