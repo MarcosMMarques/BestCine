@@ -16,6 +16,6 @@ class ProductionCompanie extends Model
 
     public function movies()
     {
-        return $this->belongsToMany(Movie::class, 'movie_production_companie', 'production_companie_name', 'movie_id');
+        return $this->belongsToMany(Movie::class, 'movie_production_companie', 'production_companie_id', 'movie_id');
     }
 }
