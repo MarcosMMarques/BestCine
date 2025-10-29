@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Services\TmdbService;
+use App\Services\MovieService;
+use App\Models\Movie;
 
 class MovieController extends Controller
 {
@@ -23,14 +25,21 @@ class MovieController extends Controller
 
     public function show(int $movieId)
     {
-        $movie = $this->tmdb->getMovieDetails($movieId, ['videos', 'credits']);
+        $movie = Movie::where('tmdb_id', $movieId)->first();
+        if (is_null($movie)) {
+            $tmdbData = $this->tmdb->getMovieDetails($movieId, ['videos', 'credits']);
 
-        if (empty($movie) || (isset($movie['success']) && $movie['success'] === false)) {
-            abort(404);
+            if (empty($tmdbData) || (isset($tmdbData['success']) && $tmdbData['success'] === false)) {
+                abort(404);
+            }
+
+            $movie = MovieService::createMovieFromTmdbData($tmdbData);
+
+            if (is_null($movie)) {
+                abort(500, 'Failed to create movie from TMDB data.');
+            }
         }
 
-        $formatted = $this->tmdb->formatMovieDetails($movie);
-
-        return view('movies.show', array_merge(['movie' => $movie], $formatted));
+        return view('movies.show', compact('movie'));
     }
 }
