@@ -9,10 +9,6 @@ class Genre extends Model
 {
     protected $table = 'genre';
 
-    protected $primaryKey = 'name';
-
-    protected $keyType = 'string';
-
     public $timestamps = false;
 
     protected $fillable = [
@@ -21,6 +17,6 @@ class Genre extends Model
 
     public function movies(): BelongsToMany
     {
-        return $this->belongsToMany(Movie::class, 'genre_movie', 'genre_name', 'movie_id');
+        return $this->belongsToMany(Movie::class, 'genre_movie', 'genre_id', 'movie_id');
     }
 }
