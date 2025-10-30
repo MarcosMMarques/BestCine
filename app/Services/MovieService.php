@@ -18,16 +18,7 @@ class MovieService
 
         $posterUrl = TmdbService::getPosterUrlFromTmdbData($data);
 
-
-        $videos = data_get($data, 'videos.results', []);
-
-        $trailer = Arr::first($videos, function ($video) {
-            return ($video['type'] ?? null) === 'Trailer'
-                && ($video['site'] ?? null) === 'YouTube'
-                && filled($video['key'] ?? null);
-        });
-
-        $trailerUrl = $trailer ? 'https://www.youtube.com/watch?v=' . $trailer['key'] : null;
+        $trailerUrl = TmdbService::getTrailerUrlFromTmdbData($data);
 
         $length = data_get($data, 'runtime');
 

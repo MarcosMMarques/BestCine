@@ -119,8 +119,18 @@ class TmdbService
 
         $runtime = data_get($movie, 'runtime');
         $runtimeLabel = $runtime ? sprintf('%dh %02dmin', floor($runtime / 60), $runtime % 60) : null;
+    public function getTrailerUrlFromTmdbData($data)
+    {
+        $videos = data_get($data, 'videos.results', []);
 
-        $genres = collect(data_get($movie, 'genres', []))
+        $trailer = collect($videos)->first(function ($video) {
+            return ($video['type'] ?? null) === 'Trailer'
+                && ($video['site'] ?? null) === 'YouTube'
+                && filled($video['key'] ?? null);
+        });
+
+        return $trailer ? 'https://www.youtube.com/watch?v=' . $trailer['key'] : null;
+    }
             ->pluck('name')
             ->filter()
             ->values()
