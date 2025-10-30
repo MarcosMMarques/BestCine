@@ -22,15 +22,15 @@ class MovieService
 
         $length = data_get($data, 'runtime');
 
-        $release_date = TmdbService::getReleaseDateFromTmdbData($data);
+        $release_date = TmdbService::getMovieReleaseDateFromTmdbData($data);
 
         $synopsis = data_get($data, 'overview');
 
-        $genres = TmdbService::getGenresFromTmdbData($data);
+        $genres = TmdbService::getMovieGenresFromTmdbData($data);
 
-        $production_companies = TmdbService::getProductionCompaniesFromTmdbData($data);
+        $production_companies = TmdbService::getMovieProductionCompaniesFromTmdbData($data);
 
-        $cast = TmdbSerivice::getMovieCastFromTmdbData($data);
+        $cast = TmdbService::getMovieCastFromTmdbData($data);
 
         try {
             DB::beginTransaction();

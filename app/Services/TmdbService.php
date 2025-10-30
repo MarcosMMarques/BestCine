@@ -88,7 +88,7 @@ class TmdbService
         return $response->json();
     }
 
-    public function getBackdropUrlFromTmdbData($data)
+    public static function getBackdropUrlFromTmdbData($data)
     {
         $backdropPath = data_get($data, 'backdrop_path');
         return $backdropPath
@@ -96,7 +96,7 @@ class TmdbService
             : null;
     }
 
-    public function getPosterUrlFromTmdbData($data)
+    public static function getPosterUrlFromTmdbData($data)
     {
         $posterPath = data_get($data, 'poster_path');
         return $posterPath
@@ -104,7 +104,7 @@ class TmdbService
             : null;
     }
 
-    public function getTrailerUrlFromTmdbData($data)
+    public static function getTrailerUrlFromTmdbData($data)
     {
         $videos = data_get($data, 'videos.results', []);
 
@@ -117,13 +117,13 @@ class TmdbService
         return $trailer ? 'https://www.youtube.com/watch?v=' . $trailer['key'] : null;
     }
 
-    public function getMovieReleaseDateFromTmdbData($data)
+    public static function getMovieReleaseDateFromTmdbData($data)
     {
         $releaseDate = data_get($data, 'release_date');
         return $date ? date('Y-m-d', strtotime($date)) : null;
     }
 
-    public function getMovieGenresFromTmdbData($data)
+    public static function getMovieGenresFromTmdbData($data)
     {
         return collect(data_get($data, 'genres', []))
             ->pluck('name')
@@ -131,7 +131,7 @@ class TmdbService
             ->all();
     }
 
-    public function getMovieProductionCompaniesFromTmdbData($data)
+    public static function getMovieProductionCompaniesFromTmdbData($data)
     {
         return collect(data_get($data, 'production_companies', []))
             ->pluck('name')
@@ -139,7 +139,7 @@ class TmdbService
             ->all();
     }
 
-    public function getMovieCastFromTmdbData($data)
+    public static function getMovieCastFromTmdbData($data)
     {
         return collect(data_get($data, 'credits.cast', []))
             ->all();
