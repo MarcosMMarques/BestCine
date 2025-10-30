@@ -120,7 +120,7 @@ class TmdbService
     public static function getMovieReleaseDateFromTmdbData($data)
     {
         $releaseDate = data_get($data, 'release_date');
-        return $date ? date('Y-m-d', strtotime($date)) : null;
+        return $releaseDate ? date('Y-m-d', strtotime($releaseDate)) : null;
     }
 
     public static function getMovieGenresFromTmdbData($data)
