@@ -22,10 +22,7 @@ class MovieService
 
         $length = data_get($data, 'runtime');
 
-        $date = data_get($data, 'release_date');
-
-
-        $release_date = $date ? date('Y-m-d', strtotime($date)) : null;
+        $release_date = TmdbService::getReleaseDateFromTmdbData($data);
 
         $synopsis = data_get($data, 'overview');
 

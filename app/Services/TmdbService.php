@@ -131,6 +131,12 @@ class TmdbService
 
         return $trailer ? 'https://www.youtube.com/watch?v=' . $trailer['key'] : null;
     }
+
+    public function getMovieReleaseDateFromTmdbData($data)
+    {
+        $releaseDate = data_get($data, 'release_date');
+        return $date ? date('Y-m-d', strtotime($date)) : null;
+    }
             ->pluck('name')
             ->filter()
             ->values()
