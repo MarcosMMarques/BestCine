@@ -147,8 +147,10 @@ class TmdbService
     }
 
         $productionCompanies = collect(data_get($movie, 'production_companies', []))
+    public function getMovieProductionCompaniesFromTmdbData($data)
+    {
+        return collect(data_get($data, 'production_companies', []))
             ->pluck('name')
-            ->filter()
             ->values()
             ->all();
 

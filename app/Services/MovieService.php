@@ -28,10 +28,7 @@ class MovieService
 
         $genres = TmdbService::getGenresFromTmdbData($data);
 
-        $production_companies = collect(data_get($data, 'production_companies', []))
-            ->pluck('name')
-            ->values()
-            ->all();
+        $production_companies = TmdbService::getProductionCompaniesFromTmdbData($data);
 
         $cast = collect(data_get($data, 'credits.cast', []))
             ->all();
