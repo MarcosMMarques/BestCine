@@ -137,10 +137,14 @@ class TmdbService
         $releaseDate = data_get($data, 'release_date');
         return $date ? date('Y-m-d', strtotime($date)) : null;
     }
+
+    public function getMovieGenresFromTmdbData($data)
+    {
+        return collect(data_get($data, 'genres', []))
             ->pluck('name')
-            ->filter()
             ->values()
             ->all();
+    }
 
         $productionCompanies = collect(data_get($movie, 'production_companies', []))
             ->pluck('name')

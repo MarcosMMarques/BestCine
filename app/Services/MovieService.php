@@ -26,10 +26,7 @@ class MovieService
 
         $synopsis = data_get($data, 'overview');
 
-        $genres = collect(data_get($data, 'genres', []))
-            ->pluck('name')
-            ->values()
-            ->all();
+        $genres = TmdbService::getGenresFromTmdbData($data);
 
         $production_companies = collect(data_get($data, 'production_companies', []))
             ->pluck('name')
