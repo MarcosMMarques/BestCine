@@ -99,8 +99,13 @@ class TmdbService
 
         $backdropPath = data_get($movie, 'backdrop_path');
         $backdropUrl = $backdropPath
+    public function getBackdropUrlFromTmdbData($data)
+    {
+        $backdropPath = data_get($data, 'backdrop_path');
+        return $backdropPath
             ? 'https://image.tmdb.org/t/p/original' . $backdropPath
             : null;
+    }
 
         $releaseDate = data_get($movie, 'release_date');
         $formattedDate = $releaseDate ? Carbon::parse($releaseDate)->format('d/m/Y') : null;

@@ -8,15 +8,13 @@ use App\Models\Actor;
 use App\Models\ProductionCompanie;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use App\Services\TmdbService;
 
 class MovieService
 {
     public static function createMovieFromTmdbData($data): ?Movie
     {
-        $backdropPath = data_get($data, 'backdrop_path');
-        $backdropUrl = $backdropPath
-            ? 'https://image.tmdb.org/t/p/original' . $backdropPath
-            : null;
+        $backdropUrl = TmdbService::getBackdropUrlFromTmdbData($data);
 
 
         $posterPath = data_get($data, 'poster_path');
