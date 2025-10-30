@@ -16,11 +16,8 @@ class MovieService
     {
         $backdropUrl = TmdbService::getBackdropUrlFromTmdbData($data);
 
+        $posterUrl = TmdbService::getPosterUrlFromTmdbData($data);
 
-        $posterPath = data_get($data, 'poster_path');
-        $posterUrl = $posterPath
-            ? 'https://image.tmdb.org/t/p/w500' . $posterPath
-            : null;
 
         $videos = data_get($data, 'videos.results', []);
 

@@ -109,6 +109,13 @@ class TmdbService
 
         $releaseDate = data_get($movie, 'release_date');
         $formattedDate = $releaseDate ? Carbon::parse($releaseDate)->format('d/m/Y') : null;
+    public function getPosterUrlFromTmdbData($data)
+    {
+        $posterPath = data_get($data, 'poster_path');
+        return $posterPath
+            ? 'https://image.tmdb.org/t/p/w500' . $posterPath
+            : null;
+    }
 
         $runtime = data_get($movie, 'runtime');
         $runtimeLabel = $runtime ? sprintf('%dh %02dmin', floor($runtime / 60), $runtime % 60) : null;
