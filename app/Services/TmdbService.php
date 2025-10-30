@@ -170,6 +170,7 @@ class TmdbService
     }
 
     public function searchMovies($query)
+    public function getMovieCastFromTmdbData($data)
     {
         $response = Http::get('https://api.themoviedb.org/3/search/movie', [
             'api_key' => $this->apiKey,
@@ -178,5 +179,7 @@ class TmdbService
         ]);
 
         return $response->json();
+        return collect(data_get($data, 'credits.cast', []))
+            ->all();
     }
 }

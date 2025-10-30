@@ -30,8 +30,7 @@ class MovieService
 
         $production_companies = TmdbService::getProductionCompaniesFromTmdbData($data);
 
-        $cast = collect(data_get($data, 'credits.cast', []))
-            ->all();
+        $cast = TmdbSerivice::getMovieCastFromTmdbData($data);
 
         try {
             DB::beginTransaction();
