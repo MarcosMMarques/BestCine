@@ -40,7 +40,7 @@
 
           @if($movie->length)
             <div class="absolute top-4 right-4 rounded-full bg-slate-900/80 px-3 py-1 text-s font-semibold uppercase tracking-wide text-yellow-300">
-              {{ $movie->length }}
+              {{ sprintf('%dh %02dmin', floor($movie->length / 60), $movie->length % 60) }}
             </div>
           @endif
         </div>
