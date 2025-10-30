@@ -55,7 +55,7 @@
                 <div class="flex items-center gap-2">
                   <span class="inline-flex h-2 w-2 rounded-full bg-amber-400"></span>
                   <dt class="sr-only">Data de lançamento</dt>
-                  <dd>{{ $movie->release_date }}</dd>
+                  <dd>{{ date('d/m/Y', strtotime($movie->release_date)) }}</dd>
                 </div>
               @endif
 
