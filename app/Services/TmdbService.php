@@ -77,28 +77,17 @@ class TmdbService
         return $response->json();
     }
 
-    public function formatMovieDetails(array $movie): array
+    public function searchMovies($query)
     {
-        $trailer = collect(data_get($movie, 'videos.results', []))
-            ->first(function ($video) {
-                return ($video['type'] ?? null) === 'Trailer'
-                    && ($video['site'] ?? null) === 'YouTube'
-                    && filled($video['key'] ?? null);
-            });
+        $response = Http::get('https://api.themoviedb.org/3/search/movie', [
+            'api_key' => $this->apiKey,
+            'query' => $query,
+            'language' => 'pt-BR',
+        ]);
 
-        $castMembers = collect(data_get($movie, 'credits.cast', []))
-            ->filter(function ($actor) {
-                return filled($actor['name'] ?? null) || filled($actor['character'] ?? null);
-            })
-            ->take(15);
+        return $response->json();
+    }
 
-        $posterPath = data_get($movie, 'poster_path');
-        $posterUrl = $posterPath
-            ? 'https://image.tmdb.org/t/p/w500' . $posterPath
-            : null;
-
-        $backdropPath = data_get($movie, 'backdrop_path');
-        $backdropUrl = $backdropPath
     public function getBackdropUrlFromTmdbData($data)
     {
         $backdropPath = data_get($data, 'backdrop_path');
@@ -107,8 +96,6 @@ class TmdbService
             : null;
     }
 
-        $releaseDate = data_get($movie, 'release_date');
-        $formattedDate = $releaseDate ? Carbon::parse($releaseDate)->format('d/m/Y') : null;
     public function getPosterUrlFromTmdbData($data)
     {
         $posterPath = data_get($data, 'poster_path');
@@ -117,8 +104,6 @@ class TmdbService
             : null;
     }
 
-        $runtime = data_get($movie, 'runtime');
-        $runtimeLabel = $runtime ? sprintf('%dh %02dmin', floor($runtime / 60), $runtime % 60) : null;
     public function getTrailerUrlFromTmdbData($data)
     {
         $videos = data_get($data, 'videos.results', []);
@@ -146,39 +131,16 @@ class TmdbService
             ->all();
     }
 
-        $productionCompanies = collect(data_get($movie, 'production_companies', []))
     public function getMovieProductionCompaniesFromTmdbData($data)
     {
         return collect(data_get($data, 'production_companies', []))
             ->pluck('name')
             ->values()
             ->all();
-
-        $trailerUrl = $trailer ? 'https://www.youtube.com/watch?v=' . $trailer['key'] : null;
-
-        return [
-            'posterUrl' => $posterUrl,
-            'backdropUrl' => $backdropUrl,
-            'formattedDate' => $formattedDate,
-            'runtimeLabel' => $runtimeLabel,
-            'genres' => $genres,
-            'productionCompanies' => $productionCompanies,
-            'trailerUrl' => $trailerUrl,
-            'castMembers' => $castMembers,
-            'profileBaseUrl' => 'https://image.tmdb.org/t/p/w185',
-        ];
     }
 
-    public function searchMovies($query)
     public function getMovieCastFromTmdbData($data)
     {
-        $response = Http::get('https://api.themoviedb.org/3/search/movie', [
-            'api_key' => $this->apiKey,
-            'query' => $query,
-            'language' => 'pt-BR',
-        ]);
-
-        return $response->json();
         return collect(data_get($data, 'credits.cast', []))
             ->all();
     }
