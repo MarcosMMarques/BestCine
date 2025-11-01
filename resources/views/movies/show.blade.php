@@ -47,8 +47,8 @@
 
   <div class="space-y-8 sm:space-y-10 min-w-0">
           <div class="w-full">
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-amber-400/80 sm:text-sm">{{ filled($movie['tagline'] ?? null) ? $movie['tagline'] : 'Detalhes do filme' }}</p>
-            <h1 class="mt-4 text-3xl font-black text-white sm:text-4xl md:text-5xl">{{ $movie['title'] }}</h1>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-amber-400/80 sm:text-sm">{{ filled($movie->tagline ?? null) ? $movie->tagline : 'Detalhes do filme' }}</p>
+            <h1 class="mt-4 text-3xl font-black text-white sm:text-4xl md:text-5xl">{{ $movie->title }}</h1>
 
             <dl class="mt-6 flex flex-wrap items-center gap-3 text-xs text-slate-300 sm:gap-4 sm:text-sm">
               @if($movie->release_date)
