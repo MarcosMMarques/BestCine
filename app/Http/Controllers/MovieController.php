@@ -17,7 +17,13 @@ class MovieController extends Controller
 
     public function index()
     {
-        $moviesData = $this->tmdb->getNowShowingMoviesInBrazil(1);
+        try {
+            $moviesData = $this->tmdb->getNowShowingMoviesInBrazil(1);
+        } catch (\Throwable $e) {
+            report($e);
+            return abort('500', 'Failed to fetch now showing movies.');
+        }
+
         $movies = $this->tmdb->formatNowShowingMoviesInBrazil($moviesData['results'] ?? []);
 
         return view('movies.index', ['movies' => $movies]);

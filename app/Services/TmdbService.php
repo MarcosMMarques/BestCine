@@ -4,6 +4,8 @@ namespace App\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class TmdbService
 {
@@ -30,7 +32,28 @@ class TmdbService
             ],
         );
 
-        return $response->json();
+        if ($response->failed()) {
+            throw new \RuntimeException('Failed to fetch now showing movies from TMDB API.');
+        }
+
+        $data = $response->json();
+
+        $validator = Validator::make($data, [
+            'results' => 'required|array',
+            'results.*.id' => 'required|integer',
+            'results.*.title' => 'required|string',
+            'results.*.poster_path' => 'nullable|string',
+            'results.*.release_date' => 'nullable|date',
+            'results.*.overview' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            throw ValidationException::withMessages([
+                $validator->errors()->toArray(),
+            ]);
+        }
+
+        return $validator->validated();
     }
 
     public function getPopularMovies()
