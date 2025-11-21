@@ -66,11 +66,11 @@
                 </div>
               @endif
 
-              @if($movie->generes)
+              @if($movie->genres)
                 <div class="flex items-center gap-2 text-slate-300">
                   <span class="inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
                   <dt class="sr-only">Gêneros</dt>
-                  <dd>{{ implode(' • ', $movie->genres) }}</dd>
+                  <dd>{{ implode(' • ', $movie->genres->pluck('name')->toArray()) }}</dd>
                 </div>
               @endif
             </dl>
