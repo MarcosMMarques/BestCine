@@ -42,4 +42,9 @@ class MovieController extends Controller
 
         return view('movies.show', compact('movie'));
     }
+
+    public function sessions(Movie $movie)
+    {
+        return view('movies.sessions', compact('movie'));
+    }
 }
