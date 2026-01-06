@@ -4,6 +4,9 @@ namespace App\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Client\RequestException;
 
 class TmdbService
 {
@@ -30,7 +33,28 @@ class TmdbService
             ],
         );
 
-        return $response->json();
+        if ($response->failed()) {
+            throw new RequestException('Failed to fetch now showing movies from TMDB API.');
+        }
+
+        $data = $response->json();
+
+        $validator = Validator::make($data, [
+            'results' => 'required|array',
+            'results.*.id' => 'required|integer',
+            'results.*.title' => 'required|string',
+            'results.*.poster_path' => 'nullable|string',
+            'results.*.release_date' => 'nullable|date',
+            'results.*.overview' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            throw ValidationException::withMessages([
+                $validator->errors()->toArray(),
+            ]);
+        }
+
+        return $validator->validated();
     }
 
     public function getPopularMovies()
@@ -74,7 +98,34 @@ class TmdbService
 
         $response = Http::get("https://api.themoviedb.org/3/movie/{$movieId}", $query);
 
-        return $response->json();
+        if ($response->failed()) {
+            throw new RequestException('Failed to fetch now showing movies from TMDB API.');
+        }
+
+        $data = $response->json();
+
+        $validator = Validator::make($data, [
+            'backdrop_path' => 'required|string',
+            'poster_path' => 'required|string',
+            'videos.results' => 'nullable|array',
+            'release_date' => 'required|date',
+            'genres' => 'nullable|array',
+            'production_companies' => 'nullable|array',
+            'credits.cast' => 'nullable|array',
+            'runtime' => 'required|integer',
+            'overview' => 'required|string',
+            'tagline' => 'nullable|string',
+            'title' => 'required|string',
+            'id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            throw ValidationException::withMessages([
+                $validator->errors()->toArray(),
+            ]);
+        }
+
+        return $validator->validated();
     }
 
     public function searchMovies($query)

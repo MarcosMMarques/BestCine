@@ -50,6 +50,13 @@
             <p class="text-xs font-semibold uppercase tracking-[0.35em] text-amber-400/80 sm:text-sm">{{ filled($movie->tagline ?? null) ? $movie->tagline : 'Detalhes do filme' }}</p>
             <h1 class="mt-4 text-3xl font-black text-white sm:text-4xl md:text-5xl">{{ $movie->title }}</h1>
 
+            <a
+              href="{{ route('movies.sessions', $movie) }}"
+              class="mt-6 inline-flex items-center justify-center rounded-full bg-amber-500 px-6 py-3 text-sm font-bold uppercase tracking-wide text-slate-950 shadow-lg shadow-amber-500/40 transition hover:bg-amber-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
+            >
+              Ver Sessões
+            </a>
+
             <dl class="mt-6 flex flex-wrap items-center gap-3 text-xs text-slate-300 sm:gap-4 sm:text-sm">
               @if($movie->release_date)
                 <div class="flex items-center gap-2">
@@ -59,11 +66,11 @@
                 </div>
               @endif
 
-              @if($movie->generes)
+              @if($movie->genres)
                 <div class="flex items-center gap-2 text-slate-300">
                   <span class="inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
                   <dt class="sr-only">Gêneros</dt>
-                  <dd>{{ implode(' • ', $movie->genres) }}</dd>
+                  <dd>{{ implode(' • ', $movie->genres->pluck('name')->toArray()) }}</dd>
                 </div>
               @endif
             </dl>
