@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MovieController;
-use App\Http\Controllers\SessionController;
+use App\Http\Controllers\ReservationController;
 
 Route::get('/', [MovieController::class, 'index'])->name('movies.index');
 Route::get('/movies/{movieId}', [MovieController::class, 'show'])
@@ -17,6 +17,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //Buy ticket
+    Route::post('/reservation/checkout/{movie}', [ReservationController::class, 'checkout'])->name('reservation.checkout');
+    Route::get('/reservation/success', [ReservationController::class, 'success'])->name('reservation.success');
+    Route::get('/reservation/cancel', [ReservationController::class, 'cancel'])->name('reservation.cancel');
 });
 
 
