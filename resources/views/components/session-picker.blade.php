@@ -30,7 +30,7 @@
         </h2>
     </header>
 
-    <form method="POST" action="{{ route('sessions.check', $movie) }}" class="mt-8 space-y-6">
+    <form method="POST" action="{{ route('reservation.checkout', $movie) }}" class="mt-8 space-y-6">
         @csrf
         <fieldset class="min-w-0">
             <legend class="sr-only">Datas disponíveis</legend>
