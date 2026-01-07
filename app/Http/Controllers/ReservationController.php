@@ -23,7 +23,7 @@ class ReservationController extends Controller
         $cancelUrl = route('ticket.cancel');
 
         try {
-            $session = $this->paymentGateway->createCheckoutSession($ticketPrice, 'brl', $successUrl, $cancelUrl);
+            $session = $this->paymentGateway->createCheckoutSession('brl', $successUrl, $cancelUrl);
 
             // Redirecionar para a página de checkout do Stripe
             return redirect()->away($session->url);
