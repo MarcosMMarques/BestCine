@@ -4,5 +4,5 @@ namespace App\Payment;
 
 interface PaymentGatewayInterface
 {
-    public function createCheckoutSession(string $currency, string $successUrl, string $cancelUrl);
+    public function createCheckoutSession(string $title, string $successUrl, string $cancelUrl);
 }

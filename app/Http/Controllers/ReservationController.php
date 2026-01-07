@@ -24,9 +24,8 @@ class ReservationController extends Controller
         $cancelUrl = route('reservation.cancel');
 
         try {
-            $session = $this->paymentGateway->createCheckoutSession('brl', $successUrl, $cancelUrl);
+            $session = $this->paymentGateway->createCheckoutSession($movie->title, $successUrl, $cancelUrl);
 
-            // Redirecionar para a página de checkout do Stripe
             return redirect()->away($session->url);
         } catch (\Exception $e) {
             return redirect()->route('movies.sessions', compact('movie'))->with('error', $e->getMessage());

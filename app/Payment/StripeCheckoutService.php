@@ -8,13 +8,14 @@ use Stripe\Stripe;
 class StripeCheckoutService implements PaymentGatewayInterface
 {
     protected const float AMOUNT = 20.00;
+    protected const string CURRENCY = 'brl';
 
     public function __construct()
     {
         Stripe::setApiKey(config('services.stripe.secret'));
     }
 
-    public function createCheckoutSession(string $currency, string $successUrl, string $cancelUrl)
+    public function createCheckoutSession(string $title, string $successUrl, string $cancelUrl)
     {
         try {
             $session = Session::create([
@@ -22,9 +23,9 @@ class StripeCheckoutService implements PaymentGatewayInterface
                 'line_items' => [
                     [
                         'price_data' => [
-                            'currency' => $currency,
+                            'currency' => self::CURRENCY,
                             'product_data' => [
-                                'name' => 'Cinema Ticket',
+                                'name' => $title,
                             ],
                             'unit_amount' => (int)(self::AMOUNT * 100)
                         ],
