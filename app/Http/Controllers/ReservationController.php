@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use App\Payment\PaymentGatewayInterface;
 
 class ReservationController extends Controller
 {
@@ -19,8 +20,8 @@ class ReservationController extends Controller
         //Buscar sessão usando filme, horário e sala
 
         // URLs para sucesso e cancelamento
-        $successUrl = route('ticket.success');
-        $cancelUrl = route('ticket.cancel');
+        $successUrl = route('reservation.success');
+        $cancelUrl = route('reservation.cancel');
 
         try {
             $session = $this->paymentGateway->createCheckoutSession('brl', $successUrl, $cancelUrl);
@@ -28,19 +29,21 @@ class ReservationController extends Controller
             // Redirecionar para a página de checkout do Stripe
             return redirect()->away($session->url);
         } catch (\Exception $e) {
-            return redirect()->route('home')->with('error', $e->getMessage());
+            return redirect()->route('movies.sessions', compact('movie'))->with('error', $e->getMessage());
         }
     }
 
     public function success()
     {
         // Lógica para criar a reserva
+        dd('passo');
 
-        return view('ticket.success');
+        return view('reservation.success');
     }
 
     public function cancel()
     {
-        return view('ticket.cancel');
+        dd('recusou');
+        return view('reservation.cancel');
     }
 }
