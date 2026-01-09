@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Movie;
 use App\Models\Room;
 use App\Models\Reservation;
+use App\Models\Seat;
 
 class Session extends Model
 {
@@ -32,5 +33,12 @@ class Session extends Model
     public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function hasSeatReserved(Seat $seat): bool
+    {
+        return $this->reservations()
+            ->where('seat_id', $seat->id)
+            ->exists();
     }
 }
