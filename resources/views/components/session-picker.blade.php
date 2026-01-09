@@ -13,7 +13,7 @@
 
         return [
             'label' => ucfirst($date->translatedFormat('l')),
-            'value' => $date->toDateString(),
+            'value' => $date,
             'displayDate' => $date->translatedFormat('d \\d\\e F'),
         ];
     });
@@ -78,7 +78,7 @@
                                                 type="radio"
                                                 name="session"
                                                 id="{{ $sessionId }}"
-                                                value="{{ $date['value'] }}|{{ $time }}"
+                                                value="{{ $date['value']->setTimeFromTimeString($time)->format('Y-m-d\TH:i') }}"
                                                 class="peer sr-only"
                                             >
                                             <span class="flex h-12 items-center justify-center rounded-xl border border-white/10 bg-slate-900/70 text-sm font-semibold text-white transition peer-checked:border-amber-400/80 peer-checked:bg-amber-400/20 peer-checked:text-amber-100">
@@ -134,7 +134,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                 </svg>
             </div>
-            
+
             <h3 class="text-xl font-bold text-white mb-2">Aviso</h3>
             <p class="text-slate-400 mb-8 leading-relaxed">
                 A tela de pagamento é apenas uma simulação! Os campos podem ser preenchidos com dados aleatórios.
@@ -209,7 +209,7 @@
                     btn.addEventListener('click', (e) => {
                         const formId = btn.getAttribute('data-form-id');
                         const form = document.getElementById(formId);
-                        
+
                         // Basic HTML5 validation check before opening modal
                         if (form && form.checkValidity()) {
                             toggleModal(btn.getAttribute('data-modal-target'), true);
