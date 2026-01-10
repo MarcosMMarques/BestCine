@@ -14,7 +14,7 @@ class Session extends Model
 {
     protected $table = 'session';
 
-    protected $filled = [
+    protected $fillable = [
         'room_id',
         'movie_id',
         'datetime'

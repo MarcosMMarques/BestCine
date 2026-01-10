@@ -11,7 +11,7 @@ class Room extends Model
 {
     protected $table = 'room';
 
-    protected $filled = [
+    protected $fillable = [
         'name',
         'seat_quantity',
     ];
