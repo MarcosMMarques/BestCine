@@ -7,7 +7,9 @@ use App\Models\Seat;
 use App\Models\User;
 use App\Models\Reservation;
 use App\Models\Session;
+use App\Models\Room;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use app\Enums\ReservationStatus;
 use App\Exceptions\SeatAlreadyReservedException;
 use App\Exceptions\UserAlreadyHasReservationException;
@@ -52,9 +54,11 @@ class ReservationService
     {
         try {
             DB::beginTransaction();
+            $room = Room::first();
             $session = Session::firstOrCreate([
                 'movie_id' => $movie->id,
-                'datetime' => $dateTime->format('Y-m-d H:i:s')
+                'datetime' => $dateTime->format('Y-m-d H:i:s'),
+                'room_id' => $room->id,
             ]);
 
             $reservation = Reservation::create([
