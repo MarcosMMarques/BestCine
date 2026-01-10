@@ -30,7 +30,10 @@ class ReservationService
         return Session::where('movie_id', $movie->id)
             ->where('datetime', $dateTime->format('Y-m-d H:i:s'))
             ->whereHas('reservations', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
+                $query->where([
+                    'user_id' => $user->id,
+                    'status' => ReservationStatus::RESERVED,
+                ]);
             })
             ->exists();
     }

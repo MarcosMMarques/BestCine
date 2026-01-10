@@ -9,6 +9,7 @@ use App\Models\Movie;
 use App\Models\Room;
 use App\Models\Reservation;
 use App\Models\Seat;
+use app\Enums\ReservationStatus;
 
 class Session extends Model
 {
@@ -38,7 +39,10 @@ class Session extends Model
     public function hasSeatReserved(Seat $seat): bool
     {
         return $this->reservations()
-            ->where('seat_id', $seat->id)
+            ->where('status', ReservationStatus::RESERVED)
+            ->whereHas('seats', function ($q) use ($seat) {
+                $q->where('seat.id', $seat->id);
+            })
             ->exists();
     }
 }
