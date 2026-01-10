@@ -5,12 +5,16 @@ namespace App\Services;
 use App\Models\Movie;
 use App\Models\Seat;
 use App\Models\User;
+use App\Models\Reservation;
 use App\Models\Session;
 use Illuminate\Support\Carbon;
+use app\Enums\ReservationStatus;
+use App\Exceptions\SeatAlreadyReservedException;
+use App\Exceptions\UserAlreadyHasReservationException;
 
 class ReservationService
 {
-    public static function checkSeatReservationByMovieAndDateTime(Movie $movie, Carbon $dateTime, Seat $seat): bool
+    public function checkSeatReservationByMovieAndDateTime(Movie $movie, Carbon $dateTime, Seat $seat): bool
     {
         $session = Session::where('movie_id', $movie->id)
             ->where('datetime', $dateTime->format('Y-m-d H:i:s'))
@@ -19,7 +23,7 @@ class ReservationService
         return $session ? $session->hasSeatReserved($seat) : false;
     }
 
-    public static function checkIfUserHasReservationForSession(User $user, Movie $movie, Carbon $dateTime): bool
+    public function checkIfUserHasReservationForSession(User $user, Movie $movie, Carbon $dateTime): bool
     {
         return Session::where('movie_id', $movie->id)
             ->where('datetime', $dateTime->format('Y-m-d H:i:s'))
@@ -28,6 +32,22 @@ class ReservationService
             })
             ->exists();
     }
+
+    public function validateReservation(
+        User $user,
+        Movie $movie,
+        Carbon $dateTime,
+        Seat $seat
+    ): void {
+        if ($this->checkSeatReservationByMovieAndDateTime($movie, $dateTime, $seat)) {
+            throw new SeatAlreadyReservedException();
+        }
+
+        if ($this->checkIfUserHasReservationForSession($user, $movie, $dateTime)) {
+            throw new UserAlreadyHasReservationException();
+        }
+    }
+
     public function createReservation(Movie $movie, Carbon $dateTime, Seat $seat, User $user): void
     {
         try {
