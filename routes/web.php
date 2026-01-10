@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
 
     //Buy ticket
     Route::post('/reservation/checkout/{movie}', [ReservationController::class, 'checkout'])->name('reservation.checkout');
-    Route::get('/reservation/success', [ReservationController::class, 'success'])->name('reservation.success');
+    Route::get('/reservation/success/{movie}', [ReservationController::class, 'success'])->name('reservation.success');
     Route::get('/reservation/cancel', [ReservationController::class, 'cancel'])->name('reservation.cancel');
 });
 
