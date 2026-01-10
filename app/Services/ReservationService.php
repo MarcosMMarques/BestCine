@@ -52,14 +52,15 @@ class ReservationService
 
     public function createReservation(Movie $movie, Carbon $dateTime, Seat $seat, User $user): void
     {
-        try {
-            DB::beginTransaction();
+        DB::transaction(function () use ($movie, $dateTime, $seat, $user) {
             $room = Room::first();
+
             $session = Session::firstOrCreate([
                 'movie_id' => $movie->id,
                 'datetime' => $dateTime->format('Y-m-d H:i:s'),
                 'room_id' => $room->id,
             ]);
+
 
             $reservation = Reservation::create([
                 'user_id' => $user->id,
@@ -67,12 +68,7 @@ class ReservationService
                 'status' => ReservationStatus::RESERVED,
             ]);
 
-            $reservation->seats()->attach($seat->id);
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
-        }
-
+            $reservation->seats()->syncWithoutDetaching([$seat->id]);
+        });
     }
 }
