@@ -53,9 +53,9 @@ class ReservationService
         }
     }
 
-    public function createReservation(Movie $movie, Carbon $dateTime, Seat $seat, User $user): void
+    public function createReservation(Movie $movie, Carbon $dateTime, Seat $seat, User $user): Reservation
     {
-        DB::transaction(function () use ($movie, $dateTime, $seat, $user) {
+        return DB::transaction(function () use ($movie, $dateTime, $seat, $user) {
             $room = Room::first();
 
             $session = Session::firstOrCreate([
@@ -72,6 +72,8 @@ class ReservationService
             ]);
 
             $reservation->seats()->syncWithoutDetaching([$seat->id]);
+
+            return $reservation;
         });
     }
 }
