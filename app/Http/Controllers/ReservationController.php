@@ -38,14 +38,15 @@ class ReservationController extends Controller
                 $seat
             );
 
-
-            $successUrl = route('reservation.success', [
-                'movie'   => $movie->id,
-                'session' => $date->toIso8601String(),
-                'seat_id' => $seat->id,
-            ]);
+            $metadata = [
+                'user_id' => (string) $request->user()->id,
+                'movie_id' => (string) $movie->id,
+                'seat_id' => (string) $seat->id,
+                'session_datetime' => $date->toIso8601String(),
+            ];
+            $successUrl = route('reservation.success');
             $cancelUrl = route('reservation.cancel');
-            $session = $this->paymentGateway->createCheckoutSession($movie->title, $successUrl, $cancelUrl);
+            $session = $this->paymentGateway->createCheckoutSession($movie->title, $successUrl, $cancelUrl, $metadata);
 
             return redirect()->away($session->url);
         } catch (SeatAlreadyReservedException | UserAlreadyHasReservationException $e) {
@@ -53,24 +54,13 @@ class ReservationController extends Controller
                 'message' => $e->getMessage()
             ], 409);
         } catch (\Exception $e) {
+            dd($e);
             return redirect()->route('movies.sessions', compact('movie'))->with('error', $e->getMessage());
         }
     }
 
     public function success(Request $request, Movie $movie)
     {
-        //TODO: Validar Dados
-        $seat = Seat::find(1);
-        $date = Carbon::parse($request->session, config('app.timezone'));
-
-        try {
-            $this->reservationService->createReservation($movie, $date, $seat, $request->user());
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Não foi possivel criar a reserva.'
-            ], 500);
-        }
-
         return view('reservation.success');
     }
 
