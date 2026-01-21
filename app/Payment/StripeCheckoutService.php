@@ -15,7 +15,7 @@ class StripeCheckoutService implements PaymentGatewayInterface
         Stripe::setApiKey(config('services.stripe.secret'));
     }
 
-    public function createCheckoutSession(string $title, string $successUrl, string $cancelUrl)
+    public function createCheckoutSession(string $title, string $successUrl, string $cancelUrl, array $metadata = [])
     {
         try {
             $session = Session::create([
@@ -35,6 +35,10 @@ class StripeCheckoutService implements PaymentGatewayInterface
                 'mode' => 'payment',
                 'success_url' => $successUrl,
                 'cancel_url' => $cancelUrl,
+                'metadata' => $metadata,
+                'payment_intent_data' => [
+                    'metadata' => $metadata,
+                ],
             ]);
 
             return $session;
