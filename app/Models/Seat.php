@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Room;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,8 @@ use App\Enums\SeatStatus;
 
 class Seat extends Model
 {
+    use HasFactory;
+
     protected $table = 'seat';
 
     protected $fillable = [
