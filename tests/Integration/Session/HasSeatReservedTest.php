@@ -26,3 +26,21 @@ it('returns true when seat is reserved in a valid reservation', function () {
 
     expect($session->hasSeatReserved($seat))->toBeTrue();
 });
+
+it('returns false when seat is not attached to any reservation', function () {
+    $movie = Movie::factory()->create();
+    $room  = Room::factory()->create();
+    $seat  = Seat::factory()->create(['room_id' => $room->id]);
+
+    $session = Session::factory()->create([
+        'movie_id' => $movie->id,
+        'room_id'  => $room->id,
+    ]);
+
+    Reservation::factory()->create([
+        'session_id' => $session->id,
+        'status'     => ReservationStatus::RESERVED,
+    ]);
+
+    expect($session->hasSeatReserved($seat))->toBeFalse();
+});
