@@ -1,8 +1,4 @@
-# Best Cine
-
-## Título do Projeto
-
-**Best Cine** - Plataforma de Reserva de Ingressos de Cinema
+# Best Cine - Plataforma de Reserva de Ingressos de Cinema
 
 ## Descrição do Projeto
 
