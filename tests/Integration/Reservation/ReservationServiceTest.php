@@ -109,3 +109,28 @@ it('throws exception if seat is already reserved', function () {
         $this->service->validateReservation($user, $movie, $date, $seat)
     )->toThrow(SeatAlreadyReservedException::class);
 });
+
+it('throws exception if user already has a reservation for the session', function () {
+    $user  = User::factory()->create();
+    $movie = Movie::factory()->create();
+    $room  = Room::factory()->create();
+    $seat  = Seat::factory()->create(['room_id' => $room->id]);
+    $date  = Carbon::parse('2023-10-10 20:00:00');
+
+    $session = Session::factory()->create([
+        'movie_id' => $movie->id,
+        'room_id'  => $room->id,
+        'datetime' => $date->format('Y-m-d H:i:s'),
+    ]);
+
+    Reservation::factory()->create([
+        'user_id'    => $user->id,
+        'session_id' => $session->id,
+        'status'     => ReservationStatus::RESERVED,
+    ]);
+
+    expect(
+        fn () =>
+        $this->service->validateReservation($user, $movie, $date, $seat)
+    )->toThrow(UserAlreadyHasReservationException::class);
+});
