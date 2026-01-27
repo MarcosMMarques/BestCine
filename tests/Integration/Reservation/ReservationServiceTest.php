@@ -43,3 +43,20 @@ it('returns true if seat is reserved for a given movie and datetime', function (
         $this->service->checkSeatReservationByMovieAndDateTime($movie, $date, $seat)
     )->toBeTrue();
 });
+
+it('returns false if seat is not reserved for the session', function () {
+    $movie = Movie::factory()->create();
+    $room  = Room::factory()->create();
+    $seat  = Seat::factory()->create(['room_id' => $room->id]);
+    $date  = Carbon::parse('2023-10-10 20:00:00');
+
+    Session::factory()->create([
+        'movie_id' => $movie->id,
+        'room_id'  => $room->id,
+        'datetime' => $date->format('Y-m-d H:i:s'),
+    ]);
+
+    expect(
+        $this->service->checkSeatReservationByMovieAndDateTime($movie, $date, $seat)
+    )->toBeFalse();
+});
