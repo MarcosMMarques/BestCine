@@ -60,3 +60,26 @@ it('returns false if seat is not reserved for the session', function () {
         $this->service->checkSeatReservationByMovieAndDateTime($movie, $date, $seat)
     )->toBeFalse();
 });
+
+it('returns true if user already has a reservation for the session', function () {
+    $user  = User::factory()->create();
+    $movie = Movie::factory()->create();
+    $room  = Room::factory()->create();
+    $date  = Carbon::parse('2023-10-10 20:00:00');
+
+    $session = Session::factory()->create([
+        'movie_id' => $movie->id,
+        'room_id'  => $room->id,
+        'datetime' => $date->format('Y-m-d H:i:s'),
+    ]);
+
+    Reservation::factory()->create([
+        'user_id'    => $user->id,
+        'session_id' => $session->id,
+        'status'     => ReservationStatus::RESERVED,
+    ]);
+
+    expect(
+        $this->service->checkIfUserHasReservationForSession($user, $movie, $date)
+    )->toBeTrue();
+});
