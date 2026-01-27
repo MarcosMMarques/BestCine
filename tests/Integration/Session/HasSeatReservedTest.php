@@ -44,3 +44,23 @@ it('returns false when seat is not attached to any reservation', function () {
 
     expect($session->hasSeatReserved($seat))->toBeFalse();
 });
+
+it('returns false when reservation status is not reserved', function () {
+    $movie = Movie::factory()->create();
+    $room  = Room::factory()->create();
+    $seat  = Seat::factory()->create(['room_id' => $room->id]);
+
+    $session = Session::factory()->create([
+        'movie_id' => $movie->id,
+        'room_id'  => $room->id,
+    ]);
+
+    $reservation = Reservation::factory()->create([
+        'session_id' => $session->id,
+        'status'     => ReservationStatus::CANCELED,
+    ]);
+
+    $reservation->seats()->attach($seat);
+
+    expect($session->hasSeatReserved($seat))->toBeFalse();
+});
