@@ -30,3 +30,27 @@ it('throws SeatAlreadyReservedException if seat is already reserved', function (
         )
     )->toThrow(SeatAlreadyReservedException::class);
 });
+
+it('throws UserAlreadyHasReservationException if user already has reservation', function () {
+    $service = Mockery::mock(ReservationService::class)->makePartial();
+
+    $service
+        ->shouldReceive('checkSeatReservationByMovieAndDateTime')
+        ->once()
+        ->andReturn(false);
+
+    $service
+        ->shouldReceive('checkIfUserHasReservationForSession')
+        ->once()
+        ->andReturn(true);
+
+    expect(
+        fn () =>
+        $service->validateReservation(
+            Mockery::mock(User::class),
+            Mockery::mock(Movie::class),
+            Carbon::now(),
+            Mockery::mock(Seat::class)
+        )
+    )->toThrow(UserAlreadyHasReservationException::class);
+});
