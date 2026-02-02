@@ -32,6 +32,18 @@
         </h2>
     </header>
 
+    <div class="mt-6 flex items-center justify-center gap-4">
+        <div class="flex items-center gap-2" id="step-1-indicator">
+            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 text-sm font-bold text-slate-950">1</span>
+            <span class="text-sm font-semibold text-amber-400">Horário</span>
+        </div>
+        <div class="h-px w-12 bg-white/20"></div>
+        <div class="flex items-center gap-2 opacity-50" id="step-2-indicator">
+            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-700 text-sm font-bold text-white">2</span>
+            <span class="text-sm font-semibold text-slate-400">Cadeiras</span>
+        </div>
+    </div>
+
     <form id="{{ $formId }}" method="POST" action="{{ route('reservation.checkout', $movie) }}" class="mt-8 space-y-6">
         @csrf
         <fieldset class="min-w-0">
