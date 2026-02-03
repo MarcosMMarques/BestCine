@@ -42,10 +42,12 @@ class ReservationService
         User $user,
         Movie $movie,
         Carbon $dateTime,
-        Seat $seat
+        array $seats
     ): void {
-        if ($this->checkSeatReservationByMovieAndDateTime($movie, $dateTime, $seat)) {
-            throw new SeatAlreadyReservedException();
+        foreach ($seats as $seat) {
+            if ($this->checkSeatReservationByMovieAndDateTime($movie, $dateTime, $seat)) {
+                throw new SeatAlreadyReservedException();
+            }
         }
 
         if ($this->checkIfUserHasReservationForSession($user, $movie, $dateTime)) {
