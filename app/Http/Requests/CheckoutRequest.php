@@ -6,24 +6,28 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CheckoutRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
             'session' => ['required', 'date'],
-            'seat_id' => ['required', 'exists:seats,id'],
+            'seats' => ['required', 'array', 'min:1'],
+            'seats.*' => ['required', 'string', 'regex:/^[A-E]-([1-9]|10)$/'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'session.required' => 'Por favor, selecione uma sessão.',
+            'session.date' => 'A sessão selecionada é inválida.',
+            'seats.required' => 'Por favor, selecione pelo menos uma cadeira.',
+            'seats.min' => 'Por favor, selecione pelo menos uma cadeira.',
+            'seats.*.regex' => 'A cadeira :input não é válida.',
         ];
     }
 }

@@ -26,9 +26,34 @@ class Seat extends Model
         return $this->belongsTo(Room::class);
     }
 
-
     public function reservations(): BelongsToMany
     {
         return $this->belongsToMany(Reservation::class, 'reservation_seat');
+    }
+
+    public static function getSeatsByIdentifiers(array $identifiers): array
+    {
+        $seats = [];
+
+        foreach ($identifiers as $identifier) {
+            $parts = explode('-', $identifier);
+            if (count($parts) !== 2) {
+                continue;
+            }
+
+            $rowLetter = $parts[0];
+            $seatNumber = $parts[1];
+            $rowNumber = ord(strtoupper($rowLetter)) - ord('A') + 1;
+
+            $seat = self::where('row', $rowNumber)
+                ->where('number', $seatNumber)
+                ->first();
+
+            if ($seat) {
+                $seats[] = $seat;
+            }
+        }
+
+        return $seats;
     }
 }

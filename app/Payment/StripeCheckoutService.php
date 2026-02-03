@@ -29,7 +29,7 @@ class StripeCheckoutService implements PaymentGatewayInterface
                             ],
                             'unit_amount' => (int)(self::AMOUNT * 100)
                         ],
-                        'quantity' => 1,
+                        'quantity' => count($metadata['seat_ids']) ?? 1,
                     ],
                 ],
                 'mode' => 'payment',
