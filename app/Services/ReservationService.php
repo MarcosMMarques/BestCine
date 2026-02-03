@@ -10,6 +10,7 @@ use App\Models\Session;
 use App\Models\Room;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use app\Enums\ReservationStatus;
 use App\Exceptions\SeatAlreadyReservedException;
 use App\Exceptions\UserAlreadyHasReservationException;
@@ -55,9 +56,9 @@ class ReservationService
         }
     }
 
-    public function createReservation(Movie $movie, Carbon $dateTime, Seat $seat, User $user): Reservation
+    public function createReservation(Movie $movie, Carbon $dateTime, array $seats, User $user): Reservation
     {
-        return DB::transaction(function () use ($movie, $dateTime, $seat, $user) {
+        return DB::transaction(function () use ($movie, $dateTime, $seats, $user) {
             $room = Room::first();
 
             $session = Session::firstOrCreate([
@@ -73,7 +74,7 @@ class ReservationService
                 'status' => ReservationStatus::RESERVED,
             ]);
 
-            $reservation->seats()->syncWithoutDetaching([$seat->id]);
+            $reservation->seats()->syncWithoutDetaching($seats);
 
             return $reservation;
         });
