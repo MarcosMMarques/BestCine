@@ -50,7 +50,7 @@ class ProcessStripePayment implements ShouldQueue
 
         $user = User::find((int) $metadata['user_id']);
         $movie = Movie::find((int) $metadata['movie_id']);
-        $seat = Seat::find((int) $metadata['seat_id']);
+        $seat_ids = json_decode($metadata['seat_ids']);
         $date = Carbon::parse($metadata['session_datetime'], config('app.timezone'));
 
 
@@ -59,11 +59,11 @@ class ProcessStripePayment implements ShouldQueue
             $paymentIntent,
             $user,
             $movie,
-            $seat,
+            $seat_ids,
             $date
         ) {
 
-            $reservation = $reservationService->createReservation($movie, $date, $seat, $user);
+            $reservation = $reservationService->createReservation($movie, $date, $seat_ids, $user);
 
             Order::create([
                 'user_id' => $user->id,
