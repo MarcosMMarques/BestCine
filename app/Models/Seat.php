@@ -31,7 +31,7 @@ class Seat extends Model
         return $this->belongsToMany(Reservation::class, 'reservation_seat');
     }
 
-    public function getSeatsByIndentifiers(array $identifiers): array
+    public static function getSeatsByIdentifiers(array $identifiers): array
     {
         $seats = [];
 
