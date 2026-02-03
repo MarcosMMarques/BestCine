@@ -48,4 +48,19 @@ class Session extends Model
             })
             ->exists();
     }
+
+    public function getReservedSeats(): array
+    {
+        $reservedSeats = $this->reservations()
+            ->where('status', ReservationStatus::RESERVED)
+            ->with('seats')
+            ->get()
+            ->pluck('seats')
+            ->flatten();
+
+        return $reservedSeats->map(function ($seat) {
+            $rowLetter = chr(ord('A') + $seat->row - 1);
+            return $rowLetter . '-' . $seat->number;
+        })->toArray();
+    }
 }

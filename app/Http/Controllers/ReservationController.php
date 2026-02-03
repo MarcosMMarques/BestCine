@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Seat;
+use App\Models\Session;
 use App\Services\ReservationService;
 use Exception;
 use Illuminate\Http\Request;
@@ -67,5 +68,28 @@ class ReservationController extends Controller
     public function cancel(Request $request)
     {
         return view('reservation.cancel');
+    }
+
+    public function getReservedSeats(Request $request, Movie $movie)
+    {
+        $sessionDatetime = $request->query('session');
+
+        if (!$sessionDatetime) {
+            return response()->json(['reserved_seats' => []], 200);
+        }
+
+        $date = Carbon::parse($sessionDatetime, config('app.timezone'));
+
+        $session = Session::where('movie_id', $movie->id)
+            ->where('datetime', $date)
+            ->first();
+
+        if (!$session) {
+            return response()->json(['reserved_seats' => []], 200);
+        }
+
+        return response()->json([
+            'reserved_seats' => $session->getReservedSeats()
+        ], 200);
     }
 }

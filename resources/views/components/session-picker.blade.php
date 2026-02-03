@@ -28,8 +28,8 @@
     $rows = ['A', 'B', 'C', 'D', 'E'];
     $seatsPerRow = 10;
 
-    // Simulate some reserved seats for demo (random pattern)
-    $reservedSeats = ['A-3', 'A-4', 'B-7', 'C-5', 'C-6', 'D-2', 'E-8', 'E-9'];
+    // Route for fetching reserved seats via AJAX
+    $reservedSeatsUrl = route('reservation.reserved-seats', $movie);
 @endphp
 
 <section class="w-full max-w-full overflow-hidden rounded-3xl bg-slate-900/80 p-6 shadow-2xl ring-1 ring-white/10">
@@ -169,7 +169,6 @@
                             @for($seatNum = 1; $seatNum <= $seatsPerRow; $seatNum++)
                                 @php
                                     $seatId = $rowLetter . '-' . $seatNum;
-                                    $isReserved = in_array($seatId, $reservedSeats);
                                 @endphp
                                 <label
                                     class="relative cursor-pointer"
@@ -180,17 +179,12 @@
                                         name="seats[]"
                                         value="{{ $seatId }}"
                                         class="peer sr-only"
-                                        {{ $isReserved ? 'disabled' : '' }}
                                         data-seat-checkbox
                                         data-seat-id="{{ $seatId }}"
                                     >
                                     <span
-                                        class="flex h-8 w-8 items-center justify-center rounded-md text-xs font-semibold transition-all duration-200 transform hover:scale-110
-                                            {{ $isReserved
-                                                ? 'bg-rose-500/80 text-rose-200 cursor-not-allowed'
-                                                : 'bg-emerald-500/80 text-emerald-100 peer-checked:bg-amber-500 peer-checked:text-slate-950 peer-checked:scale-110 peer-checked:ring-2 peer-checked:ring-amber-300'
-                                            }}"
-                                        title="{{ $isReserved ? 'Cadeira reservada' : 'Cadeira ' . $seatId }}"
+                                        class="seat-display flex h-8 w-8 items-center justify-center rounded-md text-xs font-semibold transition-all duration-200 transform hover:scale-110 bg-emerald-500/80 text-emerald-100 peer-checked:bg-amber-500 peer-checked:text-slate-950 peer-checked:scale-110 peer-checked:ring-2 peer-checked:ring-amber-300"
+                                        title="Cadeira {{ $seatId }}"
                                     >
                                         {{ $seatNum }}
                                     </span>
@@ -309,6 +303,7 @@
         const seatPickerId = '{{ $seatPickerId }}';
         const formId = '{{ $formId }}';
         const modalId = '{{ $modalId }}';
+        const reservedSeatsUrl = '{{ $reservedSeatsUrl }}';
 
         // Elements
         const step1Content = document.getElementById('step-1-content');
@@ -328,6 +323,60 @@
 
         let currentStep = 1;
         let selectedSeats = [];
+        let reservedSeats = [];
+
+        // Reset all seats to available state
+        function resetSeatsToAvailable() {
+            seatCheckboxes.forEach(function(checkbox) {
+                checkbox.disabled = false;
+                checkbox.checked = false;
+                const label = checkbox.closest('[data-seat-label]');
+                const display = label.querySelector('.seat-display');
+                display.classList.remove('bg-rose-500/80', 'text-rose-200', 'cursor-not-allowed');
+                display.classList.add('bg-emerald-500/80', 'text-emerald-100');
+                display.title = 'Cadeira ' + checkbox.dataset.seatId;
+            });
+            selectedSeats = [];
+            updateSeatSelection();
+        }
+
+        // Mark seats as reserved based on API response
+        function markSeatsAsReserved(reservedSeatIds) {
+            reservedSeats = reservedSeatIds;
+            reservedSeatIds.forEach(function(seatId) {
+                const checkbox = document.querySelector('[data-seat-id="' + seatId + '"]');
+                if (checkbox) {
+                    checkbox.disabled = true;
+                    checkbox.checked = false;
+                    const label = checkbox.closest('[data-seat-label]');
+                    const display = label.querySelector('.seat-display');
+                    display.classList.remove('bg-emerald-500/80', 'text-emerald-100');
+                    display.classList.add('bg-rose-500/80', 'text-rose-200', 'cursor-not-allowed');
+                    display.title = 'Cadeira reservada';
+                }
+            });
+        }
+
+        // Fetch reserved seats from the server
+        async function fetchReservedSeats(sessionDatetime) {
+            try {
+                // The sessionDatetime is in format 'YYYY-MM-DDTHH:mm'
+                // We need to encode it properly for the URL
+                const url = new URL(reservedSeatsUrl, window.location.origin);
+                url.searchParams.set('session', sessionDatetime);
+
+                console.log('Fetching reserved seats for session:', sessionDatetime);
+                console.log('URL:', url.toString());
+
+                const response = await fetch(url.toString());
+                const data = await response.json();
+                console.log('Reserved seats response:', data);
+                return data.reserved_seats || [];
+            } catch (error) {
+                console.error('Erro ao buscar cadeiras reservadas:', error);
+                return [];
+            }
+        }
 
         // Step navigation functions
         function goToStep(step) {
@@ -380,12 +429,24 @@
         }
 
         // Continue button click
-        continueBtn.addEventListener('click', function() {
+        continueBtn.addEventListener('click', async function() {
             const selectedSession = document.querySelector('[data-session-radio]:checked');
             if (!selectedSession) {
                 alert('Por favor, selecione um horário de sessão.');
                 return;
             }
+
+            // Reset seats and fetch reserved ones from database
+            resetSeatsToAvailable();
+            continueBtn.disabled = true;
+            continueBtn.textContent = 'Carregando...';
+
+            const reservedSeatIds = await fetchReservedSeats(selectedSession.value);
+            markSeatsAsReserved(reservedSeatIds);
+
+            continueBtn.disabled = false;
+            continueBtn.textContent = 'Continuar para escolha de assentos';
+
             goToStep(2);
         });
 
