@@ -87,7 +87,7 @@ it('returns true if user already has a reservation for the session', function ()
 it('throws exception if seat is already reserved', function () {
     $movie = Movie::factory()->create();
     $room  = Room::factory()->create();
-    $seat  = Seat::factory()->create(['room_id' => $room->id]);
+    $seat  = [Seat::factory()->create(['room_id' => $room->id])];
     $user  = User::factory()->create();
     $date  = Carbon::parse('2023-10-10 20:00:00');
 
@@ -114,7 +114,7 @@ it('throws exception if user already has a reservation for the session', functio
     $user  = User::factory()->create();
     $movie = Movie::factory()->create();
     $room  = Room::factory()->create();
-    $seat  = Seat::factory()->create(['room_id' => $room->id]);
+    $seat  = [Seat::factory()->create(['room_id' => $room->id])];
     $date  = Carbon::parse('2023-10-10 20:00:00');
 
     $session = Session::factory()->create([
@@ -138,7 +138,7 @@ it('throws exception if user already has a reservation for the session', functio
 it('creates session, reservation and attaches seat', function () {
     $user  = User::factory()->create();
     $movie = Movie::factory()->create();
-    $seat  = Seat::factory()->create();
+    $seat  = [Seat::factory()->create()];
     $date  = Carbon::parse('2023-10-10 20:00:00');
 
     $this->service->createReservation($movie, $date, $seat, $user);
@@ -156,5 +156,5 @@ it('creates session, reservation and attaches seat', function () {
         'status'     => ReservationStatus::RESERVED,
     ])->exists())->toBeTrue();
 
-    expect($session->hasSeatReserved($seat))->toBeTrue();
+    expect($session->hasSeatReserved($seat[0]))->toBeTrue();
 });

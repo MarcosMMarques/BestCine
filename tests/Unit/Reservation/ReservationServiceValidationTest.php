@@ -26,7 +26,7 @@ it('throws SeatAlreadyReservedException if seat is already reserved', function (
             Mockery::mock(User::class),
             Mockery::mock(Movie::class),
             Carbon::now(),
-            Mockery::mock(Seat::class)
+            [Mockery::mock(Seat::class)]
         )
     )->toThrow(SeatAlreadyReservedException::class);
 });
@@ -50,7 +50,7 @@ it('throws UserAlreadyHasReservationException if user already has reservation', 
             Mockery::mock(User::class),
             Mockery::mock(Movie::class),
             Carbon::now(),
-            Mockery::mock(Seat::class)
+            [Mockery::mock(Seat::class)]
         )
     )->toThrow(UserAlreadyHasReservationException::class);
 });
@@ -72,7 +72,7 @@ it('does not throw exception when reservation is valid', function () {
         Mockery::mock(User::class),
         Mockery::mock(Movie::class),
         Carbon::now(),
-        Mockery::mock(Seat::class)
+        [Mockery::mock(Seat::class)]
     );
 
     expect(true)->toBeTrue();
