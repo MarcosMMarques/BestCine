@@ -102,16 +102,17 @@ class ReservationController extends Controller
 
     public function getUserTickets(Request $request, User $user)
     {
-        $orders = Order::with([
-            'reservation',
-            'reservation.session',
-            'reservation.session.movie',
-            'reservation.session.room',
-            'reservation.seats'
-        ])
-        ->where('user_id', $user->id)
-        ->orderBy('created_at', 'desc')
-        ->get();
+        $orders = Order::select(['id', 'reservation_id', 'status', 'amount_total', 'created_at'])
+            ->with([
+                'reservation:id,session_id',
+                'reservation.session:id,movie_id,room_id,datetime',
+                'reservation.session.movie:id,title,poster_url',
+                'reservation.session.room:id,name',
+                'reservation.seats:id,row,number'
+            ])
+            ->where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
 
         return view('reservation.tickets', compact('orders'));
     }
