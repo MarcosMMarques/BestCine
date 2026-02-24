@@ -16,7 +16,7 @@
     </div>
     <div class="hidden lg:flex lg:items-center lg:gap-x-12">
       <a href="{{ route("movies.index") }}" class="text-sm/6 font-semibold text-white">Filmes em Cartaz</a>
-      <a href="#" class="text-sm/6 font-semibold text-white">Meus Ingressos</a>
+      <a href="{{ route("reservation.user-tickets", auth()->user()->id) }}" class="text-sm/6 font-semibold text-white">Meus Ingressos</a>
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
       @if(auth()->check())
