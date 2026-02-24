@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\User;
 use App\Models\Seat;
 use App\Models\Session;
 use App\Services\ReservationService;
@@ -95,6 +97,13 @@ class ReservationController extends Controller
 
         return response()->json([
             'reserved_seats' => $session->getReservedSeats()
+        ], 200);
+    }
+
+    public function getUserTickets(Request $request, User $user)
+    {
+        return response()->json([
+            'tickets' => Order::select(['reservation_id', 'status', 'amount_total'])->where('user_id', $user->id)->get(),
         ], 200);
     }
 }
