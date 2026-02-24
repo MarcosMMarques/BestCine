@@ -25,6 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/reservation/checkout/{movie}', [ReservationController::class, 'checkout'])->name('reservation.checkout');
     Route::get('/reservation/success', [ReservationController::class, 'success'])->name('reservation.success');
     Route::get('/reservation/cancel', [ReservationController::class, 'cancel'])->name('reservation.cancel');
+
+    //Get user tickets
+    Route::get('/reservation/tickets/{user}', [ReservationController::class, 'getUserTickets'])
+        ->name('reservation.user-tickets');
 });
 
 
